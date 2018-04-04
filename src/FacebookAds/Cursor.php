@@ -207,15 +207,15 @@ class Cursor implements \Iterator, \Countable, \arrayaccess {
       $this->position = 0;
     }
 
-    $this->indexRight += count($data);
-    if ($this->getUseImplicitFetch()) {
-        $this->objects = [];
-    }
-    $count = $this->position;
+    $count = $this->indexRight;
+  	$this->indexRight += count($data);
+  	if ($this->getUseImplicitFetch()) {
+		$this->objects = [];
+	}
     foreach ($data as $object_data) {
-        $this->objects[$count] = $this->createObject($object_data);
-        $count++;
-    }
+	  $count++;
+	  $this->objects[$count] = $this->createObject($object_data);
+	}
   }
 
   /**
@@ -473,8 +473,8 @@ class Cursor implements \Iterator, \Countable, \arrayaccess {
   }
 
   public function next() {
-    if ($this->position == $this->getIndexRight()) {
-      if ($this->getUseImplicitFetch()) {
+	  if ($this->position == $this->getIndexRight()) {
+		if ($this->getUseImplicitFetch()) {
         $this->fetchAfter();
         if ($this->position == $this->getIndexRight()) {
           $this->position = null;
