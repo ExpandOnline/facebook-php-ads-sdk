@@ -44,6 +44,7 @@ class ProductItemFields extends AbstractEnum {
   const APPLINKS = 'applinks';
   const AVAILABILITY = 'availability';
   const BRAND = 'brand';
+  const CAPABILITY_TO_REVIEW_STATUS = 'capability_to_review_status';
   const CATEGORY = 'category';
   const COLOR = 'color';
   const COMMERCE_INSIGHTS = 'commerce_insights';
@@ -88,7 +89,6 @@ class ProductItemFields extends AbstractEnum {
   const START_DATE = 'start_date';
   const URL = 'url';
   const VISIBILITY = 'visibility';
-  const REQUESTS = 'requests';
   const ANDROID_APP_NAME = 'android_app_name';
   const ANDROID_CLASS = 'android_class';
   const ANDROID_PACKAGE = 'android_package';
@@ -112,19 +112,20 @@ class ProductItemFields extends AbstractEnum {
 
   public function getFieldTypes() {
     return array(
-      'additional_image_cdn_urls' => 'list<list<Object>>',
+      'additional_image_cdn_urls' => 'list<map<string, string>>',
       'additional_image_urls' => 'list<string>',
-      'additional_variant_attributes' => 'list<Object>',
+      'additional_variant_attributes' => 'map<string, string>',
       'age_group' => 'AgeGroup',
       'applinks' => 'AppLinks',
       'availability' => 'Availability',
       'brand' => 'string',
+      'capability_to_review_status' => 'map<Object, Object>',
       'category' => 'string',
       'color' => 'string',
       'commerce_insights' => 'ProductItemCommerceInsights',
       'condition' => 'Condition',
       'currency' => 'string',
-      'custom_data' => 'list<Object>',
+      'custom_data' => 'map<string, string>',
       'custom_label_0' => 'string',
       'custom_label_1' => 'string',
       'custom_label_2' => 'string',
@@ -135,7 +136,7 @@ class ProductItemFields extends AbstractEnum {
       'gender' => 'Gender',
       'gtin' => 'string',
       'id' => 'string',
-      'image_cdn_urls' => 'list<Object>',
+      'image_cdn_urls' => 'map<string, string>',
       'image_url' => 'string',
       'inventory' => 'int',
       'manufacturer_part_number' => 'string',
@@ -163,7 +164,6 @@ class ProductItemFields extends AbstractEnum {
       'start_date' => 'string',
       'url' => 'string',
       'visibility' => 'Visibility',
-      'requests' => 'list<map>',
       'android_app_name' => 'string',
       'android_class' => 'string',
       'android_package' => 'string',
@@ -179,8 +179,8 @@ class ProductItemFields extends AbstractEnum {
       'iphone_app_store_id' => 'unsigned int',
       'iphone_url' => 'string',
       'offer_price_amount' => 'unsigned int',
-      'offer_price_end_date' => 'Object',
-      'offer_price_start_date' => 'Object',
+      'offer_price_end_date' => 'datetime',
+      'offer_price_start_date' => 'datetime',
       'windows_phone_app_id' => 'string',
       'windows_phone_app_name' => 'string',
       'windows_phone_url' => 'string',

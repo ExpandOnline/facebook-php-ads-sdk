@@ -40,6 +40,7 @@ class VideoCopyrightFields extends AbstractEnum {
   const CONTENT_CATEGORY = 'content_category';
   const COPYRIGHT_CONTENT_ID = 'copyright_content_id';
   const CREATOR = 'creator';
+  const EXCLUDED_OWNERSHIP_SEGMENTS = 'excluded_ownership_segments';
   const ID = 'id';
   const IN_CONFLICT = 'in_conflict';
   const MONITORING_STATUS = 'monitoring_status';
@@ -58,12 +59,13 @@ class VideoCopyrightFields extends AbstractEnum {
       'content_category' => 'string',
       'copyright_content_id' => 'string',
       'creator' => 'User',
+      'excluded_ownership_segments' => 'list<VideoCopyrightSegment>',
       'id' => 'string',
       'in_conflict' => 'bool',
       'monitoring_status' => 'string',
       'monitoring_type' => 'string',
-      'ownership_countries' => 'Object',
-      'reference_file' => 'Object',
+      'ownership_countries' => 'VideoCopyrightGeoGate',
+      'reference_file' => 'CopyrightReferenceContainer',
       'reference_file_disabled' => 'bool',
       'reference_file_disabled_by_ops' => 'bool',
       'reference_file_expired' => 'bool',

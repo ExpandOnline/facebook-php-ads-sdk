@@ -29,8 +29,8 @@ use FacebookAds\Cursor;
 use FacebookAds\Http\RequestInterface;
 use FacebookAds\TypeChecker;
 use FacebookAds\Object\Fields\OfflineConversionDataSetFields;
-use FacebookAds\Object\Values\BusinessPermittedRolesValues;
-use FacebookAds\Object\Values\OfflineConversionDataSetDataOriginValues;
+use FacebookAds\Object\Values\OfflineConversionDataSetPermittedRolesValues;
+use FacebookAds\Object\Values\OfflineConversionDataSetRelationshipTypeValues;
 
 /**
  * This class is auto-generated.
@@ -59,77 +59,11 @@ class OfflineConversionDataSet extends AbstractCrudObject {
 
   protected static function getReferencedEnums() {
     $ref_enums = array();
-    $ref_enums['DataOrigin'] = OfflineConversionDataSetDataOriginValues::getInstance()->getValues();
+    $ref_enums['PermittedRoles'] = OfflineConversionDataSetPermittedRolesValues::getInstance()->getValues();
+    $ref_enums['RelationshipType'] = OfflineConversionDataSetRelationshipTypeValues::getInstance()->getValues();
     return $ref_enums;
   }
 
-
-  public function getActivities(array $fields = array(), array $params = array(), $pending = false) {
-    $this->assureId();
-
-    $param_types = array(
-      'business_id' => 'string',
-      'end_time' => 'datetime',
-      'event_type' => 'event_type_enum',
-      'start_time' => 'datetime',
-    );
-    $enums = array(
-      'event_type_enum' => array(
-        'dataset_assign_to_adacct',
-        'dataset_autotrack_on_adacct',
-        'dataset_disable_autotrack_on_adacct',
-        'dataset_unassign_from_adacct',
-        'add_dataset_to_business',
-        'add_user_to_dataset',
-        'remove_user_from_dataset',
-        'update_user_role_on_dataset',
-        'create_custom_conversion',
-        'update_custom_conversion',
-        'create_custom_audience',
-        'share_custom_audience',
-        'unshare_custom_audience',
-      ),
-    );
-
-    $request = new ApiRequest(
-      $this->api,
-      $this->data['id'],
-      RequestInterface::METHOD_GET,
-      '/activities',
-      new AbstractCrudObject(),
-      'EDGE',
-      array(),
-      new TypeChecker($param_types, $enums)
-    );
-    $request->addParams($params);
-    $request->addFields($fields);
-    return $pending ? $request : $request->execute();
-  }
-
-  public function deleteAdAccounts(array $fields = array(), array $params = array(), $pending = false) {
-    $this->assureId();
-
-    $param_types = array(
-      'account_id' => 'string',
-      'business' => 'string',
-    );
-    $enums = array(
-    );
-
-    $request = new ApiRequest(
-      $this->api,
-      $this->data['id'],
-      RequestInterface::METHOD_DELETE,
-      '/adaccounts',
-      new AbstractCrudObject(),
-      'EDGE',
-      array(),
-      new TypeChecker($param_types, $enums)
-    );
-    $request->addParams($params);
-    $request->addFields($fields);
-    return $pending ? $request : $request->execute();
-  }
 
   public function getAdAccounts(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
@@ -171,9 +105,9 @@ class OfflineConversionDataSet extends AbstractCrudObject {
       $this->data['id'],
       RequestInterface::METHOD_POST,
       '/adaccounts',
-      new AbstractCrudObject(),
+      new OfflineConversionDataSet(),
       'EDGE',
-      array(),
+      OfflineConversionDataSet::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -205,15 +139,41 @@ class OfflineConversionDataSet extends AbstractCrudObject {
     return $pending ? $request : $request->execute();
   }
 
+  public function getAgencies(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/agencies',
+      new Business(),
+      'EDGE',
+      Business::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
   public function createAgency(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
       'business' => 'string',
+      'other_relationship' => 'string',
       'permitted_roles' => 'list<permitted_roles_enum>',
+      'relationship_type' => 'list<relationship_type_enum>',
     );
     $enums = array(
-      'permitted_roles_enum' => BusinessPermittedRolesValues::getInstance()->getValues(),
+      'permitted_roles_enum' => OfflineConversionDataSetPermittedRolesValues::getInstance()->getValues(),
+      'relationship_type_enum' => OfflineConversionDataSetRelationshipTypeValues::getInstance()->getValues(),
     );
 
     $request = new ApiRequest(
@@ -221,9 +181,57 @@ class OfflineConversionDataSet extends AbstractCrudObject {
       $this->data['id'],
       RequestInterface::METHOD_POST,
       '/agencies',
-      new Business(),
+      new OfflineConversionDataSet(),
       'EDGE',
-      Business::getFieldsEnum()->getValues(),
+      OfflineConversionDataSet::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getAudiences(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'ad_account' => 'string',
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/audiences',
+      new CustomAudience(),
+      'EDGE',
+      CustomAudience::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getCustomConversions(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'ad_account' => 'string',
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/customconversions',
+      new CustomConversion(),
+      'EDGE',
+      CustomConversion::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -239,6 +247,7 @@ class OfflineConversionDataSet extends AbstractCrudObject {
       'namespace_id' => 'string',
       'progress' => 'Object',
       'upload_id' => 'string',
+      'upload_source' => 'string',
       'upload_tag' => 'string',
     );
     $enums = array(
@@ -272,12 +281,13 @@ class OfflineConversionDataSet extends AbstractCrudObject {
     );
     $enums = array(
       'aggr_time_enum' => array(
-        'upload_time',
         'event_time',
+        'upload_time',
       ),
       'granularity_enum' => array(
         'daily',
         'hourly',
+        'six_hourly',
       ),
     );
 
@@ -300,10 +310,10 @@ class OfflineConversionDataSet extends AbstractCrudObject {
     $this->assureId();
 
     $param_types = array(
-      'end_time' => 'Object',
+      'end_time' => 'datetime',
       'order' => 'order_enum',
       'sort_by' => 'sort_by_enum',
-      'start_time' => 'Object',
+      'start_time' => 'datetime',
       'upload_tag' => 'string',
     );
     $enums = array(
@@ -312,13 +322,13 @@ class OfflineConversionDataSet extends AbstractCrudObject {
         'DESCENDING',
       ),
       'sort_by_enum' => array(
-        'CREATION_TIME',
-        'FIRST_UPLOAD_TIME',
-        'LAST_UPLOAD_TIME',
         'API_CALLS',
-        'EVENT_TIME_MIN',
+        'CREATION_TIME',
         'EVENT_TIME_MAX',
+        'EVENT_TIME_MIN',
+        'FIRST_UPLOAD_TIME',
         'IS_EXCLUDED_FOR_LIFT',
+        'LAST_UPLOAD_TIME',
       ),
     );
 
@@ -361,56 +371,23 @@ class OfflineConversionDataSet extends AbstractCrudObject {
     return $pending ? $request : $request->execute();
   }
 
-  public function deleteUserPermissions(array $fields = array(), array $params = array(), $pending = false) {
+  public function createUser(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
-      'business' => 'Object',
-      'email' => 'string',
-      'user' => 'int',
+      'data' => 'list<Object>',
     );
     $enums = array(
-    );
-
-    $request = new ApiRequest(
-      $this->api,
-      $this->data['id'],
-      RequestInterface::METHOD_DELETE,
-      '/userpermissions',
-      new AbstractCrudObject(),
-      'EDGE',
-      array(),
-      new TypeChecker($param_types, $enums)
-    );
-    $request->addParams($params);
-    $request->addFields($fields);
-    return $pending ? $request : $request->execute();
-  }
-
-  public function createUserPermission(array $fields = array(), array $params = array(), $pending = false) {
-    $this->assureId();
-
-    $param_types = array(
-      'business' => 'Object',
-      'role' => 'role_enum',
-      'user' => 'int',
-    );
-    $enums = array(
-      'role_enum' => array(
-        'ADMIN',
-        'UPLOADER',
-        'ADVERTISER',
-      ),
     );
 
     $request = new ApiRequest(
       $this->api,
       $this->data['id'],
       RequestInterface::METHOD_POST,
-      '/userpermissions',
-      new AbstractCrudObject(),
+      '/users',
+      new OfflineConversionDataSet(),
       'EDGE',
-      array(),
+      OfflineConversionDataSet::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -494,13 +471,11 @@ class OfflineConversionDataSet extends AbstractCrudObject {
 
     $param_types = array(
       'auto_assign_to_new_accounts_only' => 'bool',
-      'data_origin' => 'data_origin_enum',
       'description' => 'string',
       'enable_auto_assign_to_accounts' => 'bool',
       'name' => 'string',
     );
     $enums = array(
-      'data_origin_enum' => OfflineConversionDataSetDataOriginValues::getInstance()->getValues(),
     );
 
     $request = new ApiRequest(

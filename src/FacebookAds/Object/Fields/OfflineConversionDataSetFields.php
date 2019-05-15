@@ -40,7 +40,6 @@ class OfflineConversionDataSetFields extends AbstractEnum {
   const BUSINESS = 'business';
   const CONFIG = 'config';
   const CREATION_TIME = 'creation_time';
-  const DATA_ORIGIN = 'data_origin';
   const DESCRIPTION = 'description';
   const DUPLICATE_ENTRIES = 'duplicate_entries';
   const ENABLE_AUTO_ASSIGN_TO_ACCOUNTS = 'enable_auto_assign_to_accounts';
@@ -48,8 +47,10 @@ class OfflineConversionDataSetFields extends AbstractEnum {
   const EVENT_TIME_MAX = 'event_time_max';
   const EVENT_TIME_MIN = 'event_time_min';
   const ID = 'id';
+  const IS_MTA_USE = 'is_mta_use';
   const IS_RESTRICTED_USE = 'is_restricted_use';
   const LAST_UPLOAD_APP = 'last_upload_app';
+  const LAST_UPLOAD_APP_CHANGED_TIME = 'last_upload_app_changed_time';
   const MATCH_RATE_APPROX = 'match_rate_approx';
   const MATCHED_ENTRIES = 'matched_entries';
   const NAME = 'name';
@@ -62,7 +63,6 @@ class OfflineConversionDataSetFields extends AbstractEnum {
       'business' => 'Business',
       'config' => 'string',
       'creation_time' => 'datetime',
-      'data_origin' => 'string',
       'description' => 'string',
       'duplicate_entries' => 'int',
       'enable_auto_assign_to_accounts' => 'bool',
@@ -70,8 +70,10 @@ class OfflineConversionDataSetFields extends AbstractEnum {
       'event_time_max' => 'int',
       'event_time_min' => 'int',
       'id' => 'string',
+      'is_mta_use' => 'bool',
       'is_restricted_use' => 'bool',
       'last_upload_app' => 'string',
+      'last_upload_app_changed_time' => 'int',
       'match_rate_approx' => 'int',
       'matched_entries' => 'int',
       'name' => 'string',

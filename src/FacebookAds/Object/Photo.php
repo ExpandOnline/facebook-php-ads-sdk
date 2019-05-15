@@ -29,10 +29,16 @@ use FacebookAds\Cursor;
 use FacebookAds\Http\RequestInterface;
 use FacebookAds\TypeChecker;
 use FacebookAds\Object\Fields\PhotoFields;
+use FacebookAds\Object\Values\CommentCommentPrivacyValueValues;
+use FacebookAds\Object\Values\CommentFilterValues;
+use FacebookAds\Object\Values\CommentLiveFilterValues;
+use FacebookAds\Object\Values\CommentOrderValues;
+use FacebookAds\Object\Values\InsightsResultDatePresetValues;
+use FacebookAds\Object\Values\InsightsResultPeriodValues;
 use FacebookAds\Object\Values\PhotoBackdatedTimeGranularityValues;
-use FacebookAds\Object\Values\PhotoCheckinEntryPointValues;
 use FacebookAds\Object\Values\PhotoTypeValues;
 use FacebookAds\Object\Values\PhotoUnpublishedContentTypeValues;
+use FacebookAds\Object\Values\ProfileTypeValues;
 
 /**
  * This class is auto-generated.
@@ -55,14 +61,110 @@ class Photo extends AbstractCrudObject {
   protected static function getReferencedEnums() {
     $ref_enums = array();
     $ref_enums['BackdatedTimeGranularity'] = PhotoBackdatedTimeGranularityValues::getInstance()->getValues();
-    $ref_enums['Type'] = PhotoTypeValues::getInstance()->getValues();
     $ref_enums['UnpublishedContentType'] = PhotoUnpublishedContentTypeValues::getInstance()->getValues();
-    $ref_enums['CheckinEntryPoint'] = PhotoCheckinEntryPointValues::getInstance()->getValues();
+    $ref_enums['Type'] = PhotoTypeValues::getInstance()->getValues();
     return $ref_enums;
   }
 
 
-  public function deleteLikes(array $fields = array(), array $params = array(), $pending = false) {
+  public function getComments(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'filter' => 'filter_enum',
+      'live_filter' => 'live_filter_enum',
+      'order' => 'order_enum',
+      'since' => 'datetime',
+    );
+    $enums = array(
+      'filter_enum' => CommentFilterValues::getInstance()->getValues(),
+      'live_filter_enum' => CommentLiveFilterValues::getInstance()->getValues(),
+      'order_enum' => CommentOrderValues::getInstance()->getValues(),
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/comments',
+      new Comment(),
+      'EDGE',
+      Comment::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function createComment(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'attachment_id' => 'string',
+      'attachment_share_url' => 'string',
+      'attachment_url' => 'string',
+      'comment_privacy_value' => 'comment_privacy_value_enum',
+      'facepile_mentioned_ids' => 'list<string>',
+      'feedback_source' => 'string',
+      'is_offline' => 'bool',
+      'message' => 'string',
+      'nectar_module' => 'string',
+      'object_id' => 'string',
+      'parent_comment_id' => 'Object',
+      'text' => 'string',
+      'tracking' => 'string',
+    );
+    $enums = array(
+      'comment_privacy_value_enum' => CommentCommentPrivacyValueValues::getInstance()->getValues(),
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_POST,
+      '/comments',
+      new Comment(),
+      'EDGE',
+      Comment::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getInsights(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'date_preset' => 'date_preset_enum',
+      'metric' => 'list<Object>',
+      'period' => 'period_enum',
+      'since' => 'datetime',
+      'until' => 'datetime',
+    );
+    $enums = array(
+      'date_preset_enum' => InsightsResultDatePresetValues::getInstance()->getValues(),
+      'period_enum' => InsightsResultPeriodValues::getInstance()->getValues(),
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/insights',
+      new InsightsResult(),
+      'EDGE',
+      InsightsResult::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getLikes(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
@@ -73,11 +175,11 @@ class Photo extends AbstractCrudObject {
     $request = new ApiRequest(
       $this->api,
       $this->data['id'],
-      RequestInterface::METHOD_DELETE,
+      RequestInterface::METHOD_GET,
       '/likes',
-      new AbstractCrudObject(),
+      new Profile(),
       'EDGE',
-      array(),
+      Profile::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -89,6 +191,10 @@ class Photo extends AbstractCrudObject {
     $this->assureId();
 
     $param_types = array(
+      'feedback_source' => 'string',
+      'nectar_module' => 'string',
+      'notify' => 'bool',
+      'tracking' => 'string',
     );
     $enums = array(
     );
@@ -98,9 +204,9 @@ class Photo extends AbstractCrudObject {
       $this->data['id'],
       RequestInterface::METHOD_POST,
       '/likes',
-      new AbstractCrudObject(),
+      new Photo(),
       'EDGE',
-      array(),
+      Photo::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -108,15 +214,35 @@ class Photo extends AbstractCrudObject {
     return $pending ? $request : $request->execute();
   }
 
-  public function createTag(array $fields = array(), array $params = array(), $pending = false) {
+  public function getReactions(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
-      'tag_text' => 'string',
-      'tag_uid' => 'int',
-      'tags' => 'list<Object>',
-      'x' => 'float',
-      'y' => 'float',
+      'type' => 'type_enum',
+    );
+    $enums = array(
+      'type_enum' => ProfileTypeValues::getInstance()->getValues(),
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/reactions',
+      new Profile(),
+      'EDGE',
+      Profile::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getSharedPosts(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
     );
     $enums = array(
     );
@@ -124,11 +250,34 @@ class Photo extends AbstractCrudObject {
     $request = new ApiRequest(
       $this->api,
       $this->data['id'],
-      RequestInterface::METHOD_POST,
-      '/tags',
-      new AbstractCrudObject(),
+      RequestInterface::METHOD_GET,
+      '/sharedposts',
+      new Post(),
       'EDGE',
-      array(),
+      Post::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getTags(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/tags',
+      new TaggableSubject(),
+      'EDGE',
+      TaggableSubject::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -172,61 +321,6 @@ class Photo extends AbstractCrudObject {
       $this->api,
       $this->data['id'],
       RequestInterface::METHOD_GET,
-      '/',
-      new Photo(),
-      'NODE',
-      Photo::getFieldsEnum()->getValues(),
-      new TypeChecker($param_types, $enums)
-    );
-    $request->addParams($params);
-    $request->addFields($fields);
-    return $pending ? $request : $request->execute();
-  }
-
-  public function updateSelf(array $fields = array(), array $params = array(), $pending = false) {
-    $this->assureId();
-
-    $param_types = array(
-      'android_key_hash' => 'string',
-      'asset3d_id' => 'unsigned int',
-      'backdated_time' => 'datetime',
-      'backdated_time_granularity' => 'backdated_time_granularity_enum',
-      'checkin_entry_point' => 'checkin_entry_point_enum',
-      'composer_session_id' => 'string',
-      'direct_share_status' => 'unsigned int',
-      'ios_bundle_id' => 'string',
-      'is_checkin' => 'bool',
-      'is_cropped' => 'bool',
-      'is_explicit_location' => 'bool',
-      'og_action_type_id' => 'string',
-      'og_icon_id' => 'string',
-      'og_object_id' => 'string',
-      'og_phrase' => 'string',
-      'og_set_profile_badge' => 'bool',
-      'og_suggestion_mechanism' => 'string',
-      'place' => 'Object',
-      'privacy' => 'Object',
-      'prompt_id' => 'string',
-      'prompt_tracking_string' => 'string',
-      'proxied_app_id' => 'string',
-      'published' => 'bool',
-      'referenced_sticker_id' => 'string',
-      'sponsor_id' => 'string',
-      'sponsor_relationship' => 'unsigned int',
-      'tags' => 'list<int>',
-      'target' => 'Object',
-      'target_post' => 'string',
-      'time_since_original_post' => 'unsigned int',
-    );
-    $enums = array(
-      'backdated_time_granularity_enum' => PhotoBackdatedTimeGranularityValues::getInstance()->getValues(),
-      'checkin_entry_point_enum' => PhotoCheckinEntryPointValues::getInstance()->getValues(),
-    );
-
-    $request = new ApiRequest(
-      $this->api,
-      $this->data['id'],
-      RequestInterface::METHOD_POST,
       '/',
       new Photo(),
       'NODE',

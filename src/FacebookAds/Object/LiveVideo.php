@@ -29,6 +29,9 @@ use FacebookAds\Cursor;
 use FacebookAds\Http\RequestInterface;
 use FacebookAds\TypeChecker;
 use FacebookAds\Object\Fields\LiveVideoFields;
+use FacebookAds\Object\Values\CommentFilterValues;
+use FacebookAds\Object\Values\CommentLiveFilterValues;
+use FacebookAds\Object\Values\CommentOrderValues;
 use FacebookAds\Object\Values\LiveVideoBroadcastStatusValues;
 use FacebookAds\Object\Values\LiveVideoLiveCommentModerationSettingValues;
 use FacebookAds\Object\Values\LiveVideoProjectionValues;
@@ -37,6 +40,7 @@ use FacebookAds\Object\Values\LiveVideoSpatialAudioFormatValues;
 use FacebookAds\Object\Values\LiveVideoStatusValues;
 use FacebookAds\Object\Values\LiveVideoStereoscopicModeValues;
 use FacebookAds\Object\Values\LiveVideoStreamTypeValues;
+use FacebookAds\Object\Values\ProfileTypeValues;
 
 /**
  * This class is auto-generated.
@@ -58,17 +62,241 @@ class LiveVideo extends AbstractCrudObject {
 
   protected static function getReferencedEnums() {
     $ref_enums = array();
-    $ref_enums['LiveCommentModerationSetting'] = LiveVideoLiveCommentModerationSettingValues::getInstance()->getValues();
+    $ref_enums['Projection'] = LiveVideoProjectionValues::getInstance()->getValues();
+    $ref_enums['SpatialAudioFormat'] = LiveVideoSpatialAudioFormatValues::getInstance()->getValues();
     $ref_enums['Status'] = LiveVideoStatusValues::getInstance()->getValues();
+    $ref_enums['StereoscopicMode'] = LiveVideoStereoscopicModeValues::getInstance()->getValues();
     $ref_enums['StreamType'] = LiveVideoStreamTypeValues::getInstance()->getValues();
     $ref_enums['BroadcastStatus'] = LiveVideoBroadcastStatusValues::getInstance()->getValues();
-    $ref_enums['Projection'] = LiveVideoProjectionValues::getInstance()->getValues();
     $ref_enums['Source'] = LiveVideoSourceValues::getInstance()->getValues();
-    $ref_enums['SpatialAudioFormat'] = LiveVideoSpatialAudioFormatValues::getInstance()->getValues();
-    $ref_enums['StereoscopicMode'] = LiveVideoStereoscopicModeValues::getInstance()->getValues();
+    $ref_enums['LiveCommentModerationSetting'] = LiveVideoLiveCommentModerationSettingValues::getInstance()->getValues();
     return $ref_enums;
   }
 
+
+  public function getBlockedUsers(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'uid' => 'Object',
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/blocked_users',
+      new User(),
+      'EDGE',
+      User::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getComments(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'filter' => 'filter_enum',
+      'live_filter' => 'live_filter_enum',
+      'order' => 'order_enum',
+      'since' => 'datetime',
+    );
+    $enums = array(
+      'filter_enum' => CommentFilterValues::getInstance()->getValues(),
+      'live_filter_enum' => CommentLiveFilterValues::getInstance()->getValues(),
+      'order_enum' => CommentOrderValues::getInstance()->getValues(),
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/comments',
+      new Comment(),
+      'EDGE',
+      Comment::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getCrosspostSharedPages(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/crosspost_shared_pages',
+      new Page(),
+      'EDGE',
+      Page::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getCrosspostedBroadcasts(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/crossposted_broadcasts',
+      new LiveVideo(),
+      'EDGE',
+      LiveVideo::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getErrors(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/errors',
+      new LiveVideoError(),
+      'EDGE',
+      LiveVideoError::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getLikes(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/likes',
+      new Profile(),
+      'EDGE',
+      Profile::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getPolls(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/polls',
+      new VideoPoll(),
+      'EDGE',
+      VideoPoll::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function createPoll(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'close_after_voting' => 'bool',
+      'correct_option' => 'unsigned int',
+      'default_open' => 'bool',
+      'options' => 'list<string>',
+      'question' => 'string',
+      'show_gradient' => 'bool',
+      'show_results' => 'bool',
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_POST,
+      '/polls',
+      new VideoPoll(),
+      'EDGE',
+      VideoPoll::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getReactions(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'type' => 'type_enum',
+    );
+    $enums = array(
+      'type_enum' => ProfileTypeValues::getInstance()->getValues(),
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/reactions',
+      new Profile(),
+      'EDGE',
+      Profile::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
 
   public function deleteSelf(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
@@ -97,6 +325,7 @@ class LiveVideo extends AbstractCrudObject {
     $this->assureId();
 
     $param_types = array(
+      'target_token' => 'string',
     );
     $enums = array(
     );
@@ -138,12 +367,15 @@ class LiveVideo extends AbstractCrudObject {
       'disturbing' => 'bool',
       'embeddable' => 'bool',
       'end_live_video' => 'bool',
+      'is_audio_only' => 'bool',
       'is_manual_mode' => 'bool',
       'live_comment_moderation_setting' => 'list<live_comment_moderation_setting_enum>',
       'live_encoders' => 'list<string>',
+      'og_icon_id' => 'string',
+      'og_phrase' => 'string',
       'place' => 'Object',
       'planned_start_time' => 'int',
-      'privacy' => 'Object',
+      'privacy' => 'string',
       'product_items' => 'list<string>',
       'published' => 'bool',
       'schedule_custom_profile_image' => 'file',

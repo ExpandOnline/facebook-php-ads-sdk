@@ -95,9 +95,9 @@ class ExtendedCredit extends AbstractCrudObject {
       $this->data['id'],
       RequestInterface::METHOD_POST,
       '/extended_credit_invoice_groups',
-      new ExtendedCredit(),
+      new ExtendedCreditInvoiceGroup(),
       'EDGE',
-      ExtendedCredit::getFieldsEnum()->getValues(),
+      ExtendedCreditInvoiceGroup::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);

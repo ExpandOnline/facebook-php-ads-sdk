@@ -29,7 +29,6 @@ use FacebookAds\Cursor;
 use FacebookAds\Http\RequestInterface;
 use FacebookAds\TypeChecker;
 use FacebookAds\Object\Fields\AdAccountCreationRequestFields;
-use FacebookAds\Object\Values\AdAccountCreationRequestStatusValues;
 use FacebookAds\Object\Values\AdAccountCreationRequestSubverticalValues;
 use FacebookAds\Object\Values\AdAccountCreationRequestVerticalValues;
 
@@ -62,12 +61,11 @@ class AdAccountCreationRequest extends AbstractCrudObject {
     $ref_enums = array();
     $ref_enums['Subvertical'] = AdAccountCreationRequestSubverticalValues::getInstance()->getValues();
     $ref_enums['Vertical'] = AdAccountCreationRequestVerticalValues::getInstance()->getValues();
-    $ref_enums['Status'] = AdAccountCreationRequestStatusValues::getInstance()->getValues();
     return $ref_enums;
   }
 
 
-  public function deleteSelf(array $fields = array(), array $params = array(), $pending = false) {
+  public function getAdAccounts(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
@@ -78,11 +76,11 @@ class AdAccountCreationRequest extends AbstractCrudObject {
     $request = new ApiRequest(
       $this->api,
       $this->data['id'],
-      RequestInterface::METHOD_DELETE,
-      '/',
-      new AbstractCrudObject(),
-      'NODE',
-      array(),
+      RequestInterface::METHOD_GET,
+      '/adaccounts',
+      new AdAccount(),
+      'EDGE',
+      AdAccount::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -121,6 +119,7 @@ class AdAccountCreationRequest extends AbstractCrudObject {
       'additional_comment' => 'string',
       'address_in_chinese' => 'string',
       'address_in_english' => 'Object',
+      'address_in_local_language' => 'string',
       'advertiser_business_id' => 'string',
       'business_registration' => 'file',
       'business_registration_id' => 'string',
@@ -130,12 +129,13 @@ class AdAccountCreationRequest extends AbstractCrudObject {
       'english_legal_entity_name' => 'string',
       'extended_credit_id' => 'string',
       'is_smb' => 'bool',
-      'official_website_url' => 'Object',
+      'legal_entity_name_in_local_language' => 'string',
+      'official_website_url' => 'string',
       'planning_agency_business_id' => 'string',
       'promotable_app_ids' => 'list<string>',
       'promotable_page_ids' => 'list<string>',
-      'promotable_page_urls' => 'list<Object>',
-      'promotable_urls' => 'list<Object>',
+      'promotable_page_urls' => 'list<string>',
+      'promotable_urls' => 'list<string>',
       'subvertical' => 'subvertical_enum',
       'vertical' => 'vertical_enum',
     );

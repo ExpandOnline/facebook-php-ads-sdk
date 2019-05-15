@@ -39,6 +39,7 @@ class CustomConversionFields extends AbstractEnum {
 
   const ACCOUNT_ID = 'account_id';
   const AGGREGATION_RULE = 'aggregation_rule';
+  const BUSINESS = 'business';
   const CREATION_TIME = 'creation_time';
   const CUSTOM_EVENT_TYPE = 'custom_event_type';
   const DATA_SOURCES = 'data_sources';
@@ -48,6 +49,7 @@ class CustomConversionFields extends AbstractEnum {
   const FIRST_FIRED_TIME = 'first_fired_time';
   const ID = 'id';
   const IS_ARCHIVED = 'is_archived';
+  const IS_UNAVAILABLE = 'is_unavailable';
   const LAST_FIRED_TIME = 'last_fired_time';
   const NAME = 'name';
   const OFFLINE_CONVERSION_DATA_SET = 'offline_conversion_data_set';
@@ -56,11 +58,13 @@ class CustomConversionFields extends AbstractEnum {
   const RULE = 'rule';
   const ADVANCED_RULE = 'advanced_rule';
   const EVENT_SOURCE_ID = 'event_source_id';
+  const CUSTOM_CONVERSION_ID = 'custom_conversion_id';
 
   public function getFieldTypes() {
     return array(
       'account_id' => 'string',
       'aggregation_rule' => 'string',
+      'business' => 'Business',
       'creation_time' => 'datetime',
       'custom_event_type' => 'CustomEventType',
       'data_sources' => 'list<ExternalEventSource>',
@@ -70,6 +74,7 @@ class CustomConversionFields extends AbstractEnum {
       'first_fired_time' => 'datetime',
       'id' => 'string',
       'is_archived' => 'bool',
+      'is_unavailable' => 'bool',
       'last_fired_time' => 'datetime',
       'name' => 'string',
       'offline_conversion_data_set' => 'OfflineConversionDataSet',
@@ -78,6 +83,7 @@ class CustomConversionFields extends AbstractEnum {
       'rule' => 'string',
       'advanced_rule' => 'string',
       'event_source_id' => 'string',
+      'custom_conversion_id' => 'string',
     );
   }
 }

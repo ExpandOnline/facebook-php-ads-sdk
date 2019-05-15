@@ -54,7 +54,7 @@ class RTBDynamicPost extends AbstractCrudObject {
   }
 
 
-  public function deleteSelf(array $fields = array(), array $params = array(), $pending = false) {
+  public function getInstagramComments(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
@@ -65,11 +65,11 @@ class RTBDynamicPost extends AbstractCrudObject {
     $request = new ApiRequest(
       $this->api,
       $this->data['id'],
-      RequestInterface::METHOD_DELETE,
-      '/',
-      new AbstractCrudObject(),
-      'NODE',
-      array(),
+      RequestInterface::METHOD_GET,
+      '/instagram_comments',
+      new InstagramComment(),
+      'EDGE',
+      InstagramComment::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);

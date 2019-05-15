@@ -43,7 +43,7 @@ class AdsPixelStatsResultFields extends AbstractEnum {
 
   public function getFieldTypes() {
     return array(
-      'aggregation' => 'Aggregation',
+      'aggregation' => 'string',
       'data' => 'list<AdsPixelStats>',
       'start_time' => 'datetime',
     );

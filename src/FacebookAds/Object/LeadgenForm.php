@@ -59,8 +59,8 @@ class LeadgenForm extends AbstractCrudObject {
 
   protected static function getReferencedEnums() {
     $ref_enums = array();
-    $ref_enums['Locale'] = LeadgenFormLocaleValues::getInstance()->getValues();
     $ref_enums['Status'] = LeadgenFormStatusValues::getInstance()->getValues();
+    $ref_enums['Locale'] = LeadgenFormLocaleValues::getInstance()->getValues();
     return $ref_enums;
   }
 
@@ -88,13 +88,10 @@ class LeadgenForm extends AbstractCrudObject {
     return $pending ? $request : $request->execute();
   }
 
-  public function createLead(array $fields = array(), array $params = array(), $pending = false) {
+  public function getTestLeads(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
-      'end_time' => 'datetime',
-      'session_id' => 'string',
-      'start_time' => 'datetime',
     );
     $enums = array(
     );
@@ -102,11 +99,11 @@ class LeadgenForm extends AbstractCrudObject {
     $request = new ApiRequest(
       $this->api,
       $this->data['id'],
-      RequestInterface::METHOD_POST,
-      '/leads',
-      new LeadgenForm(),
+      RequestInterface::METHOD_GET,
+      '/test_leads',
+      new Lead(),
       'EDGE',
-      LeadgenForm::getFieldsEnum()->getValues(),
+      Lead::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -129,9 +126,9 @@ class LeadgenForm extends AbstractCrudObject {
       $this->data['id'],
       RequestInterface::METHOD_POST,
       '/test_leads',
-      new LeadgenForm(),
+      new Lead(),
       'EDGE',
-      LeadgenForm::getFieldsEnum()->getValues(),
+      Lead::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -189,16 +186,9 @@ class LeadgenForm extends AbstractCrudObject {
     $this->assureId();
 
     $param_types = array(
-      'context_card_id' => 'string',
-      'legal_content_id' => 'string',
-      'locale' => 'locale_enum',
-      'name' => 'string',
-      'questions' => 'list<Object>',
       'status' => 'status_enum',
-      'thank_you_page_id' => 'string',
     );
     $enums = array(
-      'locale_enum' => LeadgenFormLocaleValues::getInstance()->getValues(),
       'status_enum' => LeadgenFormStatusValues::getInstance()->getValues(),
     );
 

@@ -30,7 +30,6 @@ use FacebookAds\Http\RequestInterface;
 use FacebookAds\TypeChecker;
 use FacebookAds\Object\Fields\CampaignFields;
 use FacebookAds\Object\Values\AdDatePresetValues;
-use FacebookAds\Object\Values\AdLabelExecutionOptionsValues;
 use FacebookAds\Object\Values\AdSetDatePresetValues;
 use FacebookAds\Object\Values\AdSetEffectiveStatusValues;
 use FacebookAds\Object\Values\AdsInsightsActionAttributionWindowsValues;
@@ -40,15 +39,14 @@ use FacebookAds\Object\Values\AdsInsightsBreakdownsValues;
 use FacebookAds\Object\Values\AdsInsightsDatePresetValues;
 use FacebookAds\Object\Values\AdsInsightsLevelValues;
 use FacebookAds\Object\Values\AdsInsightsSummaryActionBreakdownsValues;
-use FacebookAds\Object\Values\AdsInsightsSummaryValues;
 use FacebookAds\Object\Values\CampaignBidStrategyValues;
 use FacebookAds\Object\Values\CampaignConfiguredStatusValues;
 use FacebookAds\Object\Values\CampaignDatePresetValues;
-use FacebookAds\Object\Values\CampaignDeleteStrategyValues;
 use FacebookAds\Object\Values\CampaignEffectiveStatusValues;
 use FacebookAds\Object\Values\CampaignExecutionOptionsValues;
 use FacebookAds\Object\Values\CampaignObjectiveValues;
 use FacebookAds\Object\Values\CampaignOperatorValues;
+use FacebookAds\Object\Values\CampaignStatusOptionValues;
 use FacebookAds\Object\Values\CampaignStatusValues;
 use FacebookAds\Object\Traits\AdLabelAwareCrudObjectTrait;
 use FacebookAds\Object\Traits\ObjectValidation;
@@ -88,10 +86,10 @@ class Campaign extends AbstractArchivableCrudObject {
     $ref_enums['EffectiveStatus'] = CampaignEffectiveStatusValues::getInstance()->getValues();
     $ref_enums['Status'] = CampaignStatusValues::getInstance()->getValues();
     $ref_enums['DatePreset'] = CampaignDatePresetValues::getInstance()->getValues();
-    $ref_enums['DeleteStrategy'] = CampaignDeleteStrategyValues::getInstance()->getValues();
     $ref_enums['ExecutionOptions'] = CampaignExecutionOptionsValues::getInstance()->getValues();
     $ref_enums['Objective'] = CampaignObjectiveValues::getInstance()->getValues();
     $ref_enums['Operator'] = CampaignOperatorValues::getInstance()->getValues();
+    $ref_enums['StatusOption'] = CampaignStatusOptionValues::getInstance()->getValues();
     return $ref_enums;
   }
 
@@ -104,7 +102,7 @@ class Campaign extends AbstractArchivableCrudObject {
       'execution_options' => 'list<execution_options_enum>',
     );
     $enums = array(
-      'execution_options_enum' => AdLabelExecutionOptionsValues::getInstance()->getValues(),
+      'execution_options_enum' => CampaignExecutionOptionsValues::getInstance()->getValues(),
     );
 
     $request = new ApiRequest(
@@ -130,7 +128,7 @@ class Campaign extends AbstractArchivableCrudObject {
       'execution_options' => 'list<execution_options_enum>',
     );
     $enums = array(
-      'execution_options_enum' => AdLabelExecutionOptionsValues::getInstance()->getValues(),
+      'execution_options_enum' => CampaignExecutionOptionsValues::getInstance()->getValues(),
     );
 
     $request = new ApiRequest(
@@ -138,9 +136,9 @@ class Campaign extends AbstractArchivableCrudObject {
       $this->data['id'],
       RequestInterface::METHOD_POST,
       '/adlabels',
-      new AdLabel(),
+      new Campaign(),
       'EDGE',
-      AdLabel::getFieldsEnum()->getValues(),
+      Campaign::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -179,6 +177,8 @@ class Campaign extends AbstractArchivableCrudObject {
       'ad_draft_id' => 'string',
       'date_preset' => 'date_preset_enum',
       'effective_status' => 'list<string>',
+      'include_deleted' => 'bool',
+      'include_drafts' => 'bool',
       'time_range' => 'Object',
       'updated_since' => 'int',
     );
@@ -208,6 +208,7 @@ class Campaign extends AbstractArchivableCrudObject {
       'ad_draft_id' => 'string',
       'date_preset' => 'date_preset_enum',
       'effective_status' => 'list<effective_status_enum>',
+      'include_drafts' => 'bool',
       'is_completed' => 'bool',
       'time_range' => 'Object',
     );
@@ -260,6 +261,35 @@ class Campaign extends AbstractArchivableCrudObject {
     return $pending ? $request : $request->execute();
   }
 
+  public function createCopy(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'deep_copy' => 'bool',
+      'end_time' => 'datetime',
+      'rename_options' => 'Object',
+      'start_time' => 'datetime',
+      'status_option' => 'status_option_enum',
+    );
+    $enums = array(
+      'status_option_enum' => CampaignStatusOptionValues::getInstance()->getValues(),
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_POST,
+      '/copies',
+      new Campaign(),
+      'EDGE',
+      Campaign::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
   public function getInsights(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
@@ -273,12 +303,12 @@ class Campaign extends AbstractArchivableCrudObject {
       'export_columns' => 'list<string>',
       'export_format' => 'string',
       'export_name' => 'string',
-      'fields' => 'list<fields_enum>',
+      'fields' => 'list<string>',
       'filtering' => 'list<Object>',
       'level' => 'level_enum',
       'product_id_limit' => 'int',
       'sort' => 'list<string>',
-      'summary' => 'list<summary_enum>',
+      'summary' => 'list<string>',
       'summary_action_breakdowns' => 'list<summary_action_breakdowns_enum>',
       'time_increment' => 'string',
       'time_range' => 'Object',
@@ -291,7 +321,6 @@ class Campaign extends AbstractArchivableCrudObject {
       'action_report_time_enum' => AdsInsightsActionReportTimeValues::getInstance()->getValues(),
       'breakdowns_enum' => AdsInsightsBreakdownsValues::getInstance()->getValues(),
       'date_preset_enum' => AdsInsightsDatePresetValues::getInstance()->getValues(),
-      'summary_enum' => AdsInsightsSummaryValues::getInstance()->getValues(),
       'level_enum' => AdsInsightsLevelValues::getInstance()->getValues(),
       'summary_action_breakdowns_enum' => AdsInsightsSummaryActionBreakdownsValues::getInstance()->getValues(),
     );
@@ -324,12 +353,12 @@ class Campaign extends AbstractArchivableCrudObject {
       'export_columns' => 'list<string>',
       'export_format' => 'string',
       'export_name' => 'string',
-      'fields' => 'list<fields_enum>',
+      'fields' => 'list<string>',
       'filtering' => 'list<Object>',
       'level' => 'level_enum',
       'product_id_limit' => 'int',
       'sort' => 'list<string>',
-      'summary' => 'list<summary_enum>',
+      'summary' => 'list<string>',
       'summary_action_breakdowns' => 'list<summary_action_breakdowns_enum>',
       'time_increment' => 'string',
       'time_range' => 'Object',
@@ -342,7 +371,6 @@ class Campaign extends AbstractArchivableCrudObject {
       'action_report_time_enum' => AdsInsightsActionReportTimeValues::getInstance()->getValues(),
       'breakdowns_enum' => AdsInsightsBreakdownsValues::getInstance()->getValues(),
       'date_preset_enum' => AdsInsightsDatePresetValues::getInstance()->getValues(),
-      'summary_enum' => AdsInsightsSummaryValues::getInstance()->getValues(),
       'level_enum' => AdsInsightsLevelValues::getInstance()->getValues(),
       'summary_action_breakdowns_enum' => AdsInsightsSummaryActionBreakdownsValues::getInstance()->getValues(),
     );
@@ -389,8 +417,33 @@ class Campaign extends AbstractArchivableCrudObject {
     $this->assureId();
 
     $param_types = array(
+      'am_call_tags' => 'map',
+      'date_preset' => 'date_preset_enum',
+      'from_adtable' => 'bool',
+      'time_range' => 'Object',
     );
     $enums = array(
+      'date_preset_enum' => array(
+        'last_14d',
+        'last_28d',
+        'last_30d',
+        'last_3d',
+        'last_7d',
+        'last_90d',
+        'last_month',
+        'last_quarter',
+        'last_week_mon_sun',
+        'last_week_sun_sat',
+        'last_year',
+        'lifetime',
+        'this_month',
+        'this_quarter',
+        'this_week_mon_today',
+        'this_week_sun_today',
+        'this_year',
+        'today',
+        'yesterday',
+      ),
     );
 
     $request = new ApiRequest(
@@ -413,6 +466,8 @@ class Campaign extends AbstractArchivableCrudObject {
 
     $param_types = array(
       'adlabels' => 'list<Object>',
+      'adset_bid_amounts' => 'map',
+      'adset_budgets' => 'list<map>',
       'bid_strategy' => 'bid_strategy_enum',
       'budget_rebalance_flag' => 'bool',
       'daily_budget' => 'unsigned int',
@@ -421,9 +476,11 @@ class Campaign extends AbstractArchivableCrudObject {
       'lifetime_budget' => 'unsigned int',
       'name' => 'string',
       'objective' => 'objective_enum',
+      'pacing_type' => 'list<string>',
       'promoted_object' => 'Object',
       'spend_cap' => 'unsigned int',
       'status' => 'status_enum',
+      'upstream_events' => 'map',
     );
     $enums = array(
       'bid_strategy_enum' => CampaignBidStrategyValues::getInstance()->getValues(),

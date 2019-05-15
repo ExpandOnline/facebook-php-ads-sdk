@@ -39,6 +39,8 @@ class AdAccountFields extends AbstractEnum {
 
   const ACCOUNT_ID = 'account_id';
   const ACCOUNT_STATUS = 'account_status';
+  const AD_ACCOUNT_CREATION_REQUEST = 'ad_account_creation_request';
+  const AD_ACCOUNT_PROMOTABLE_OBJECTS = 'ad_account_promotable_objects';
   const AGE = 'age';
   const AGENCY_CLIENT_DECLARATION = 'agency_client_declaration';
   const AMOUNT_SPENT = 'amount_spent';
@@ -58,8 +60,8 @@ class AdAccountFields extends AbstractEnum {
   const DISABLE_REASON = 'disable_reason';
   const END_ADVERTISER = 'end_advertiser';
   const END_ADVERTISER_NAME = 'end_advertiser_name';
-  const EXTENDED_CREDIT_INVOICE_GROUP = 'extended_credit_invoice_group';
   const FAILED_DELIVERY_CHECKS = 'failed_delivery_checks';
+  const FB_ENTITY = 'fb_entity';
   const FUNDING_SOURCE = 'funding_source';
   const FUNDING_SOURCE_DETAILS = 'funding_source_details';
   const HAS_MIGRATED_PERMISSIONS = 'has_migrated_permissions';
@@ -68,6 +70,7 @@ class AdAccountFields extends AbstractEnum {
   const IO_NUMBER = 'io_number';
   const IS_ATTRIBUTION_SPEC_SYSTEM_DEFAULT = 'is_attribution_spec_system_default';
   const IS_DIRECT_DEALS_ENABLED = 'is_direct_deals_enabled';
+  const IS_IN_3DS_AUTHORIZATION_ENABLED_MARKET = 'is_in_3ds_authorization_enabled_market';
   const IS_IN_MIDDLE_OF_LOCAL_ENTITY_MIGRATION = 'is_in_middle_of_local_entity_migration';
   const IS_NOTIFICATIONS_ENABLED = 'is_notifications_enabled';
   const IS_PERSONAL = 'is_personal';
@@ -81,7 +84,6 @@ class AdAccountFields extends AbstractEnum {
   const OFFSITE_PIXELS_TOS_ACCEPTED = 'offsite_pixels_tos_accepted';
   const OWNER = 'owner';
   const PARTNER = 'partner';
-  const RATE_LIMIT_RESET_TIME = 'rate_limit_reset_time';
   const RF_SPEC = 'rf_spec';
   const SHOW_CHECKOUT_EXPERIENCE = 'show_checkout_experience';
   const SPEND_CAP = 'spend_cap';
@@ -99,6 +101,8 @@ class AdAccountFields extends AbstractEnum {
     return array(
       'account_id' => 'string',
       'account_status' => 'unsigned int',
+      'ad_account_creation_request' => 'AdAccountCreationRequest',
+      'ad_account_promotable_objects' => 'AdAccountPromotableObjects',
       'age' => 'float',
       'agency_client_declaration' => 'AgencyClientDeclaration',
       'amount_spent' => 'string',
@@ -118,8 +122,8 @@ class AdAccountFields extends AbstractEnum {
       'disable_reason' => 'unsigned int',
       'end_advertiser' => 'string',
       'end_advertiser_name' => 'string',
-      'extended_credit_invoice_group' => 'ExtendedCreditInvoiceGroup',
       'failed_delivery_checks' => 'list<DeliveryCheck>',
+      'fb_entity' => 'unsigned int',
       'funding_source' => 'string',
       'funding_source_details' => 'FundingSourceDetails',
       'has_migrated_permissions' => 'bool',
@@ -128,6 +132,7 @@ class AdAccountFields extends AbstractEnum {
       'io_number' => 'string',
       'is_attribution_spec_system_default' => 'bool',
       'is_direct_deals_enabled' => 'bool',
+      'is_in_3ds_authorization_enabled_market' => 'bool',
       'is_in_middle_of_local_entity_migration' => 'bool',
       'is_notifications_enabled' => 'bool',
       'is_personal' => 'unsigned int',
@@ -141,7 +146,6 @@ class AdAccountFields extends AbstractEnum {
       'offsite_pixels_tos_accepted' => 'bool',
       'owner' => 'string',
       'partner' => 'string',
-      'rate_limit_reset_time' => 'string',
       'rf_spec' => 'ReachFrequencySpec',
       'show_checkout_experience' => 'bool',
       'spend_cap' => 'string',

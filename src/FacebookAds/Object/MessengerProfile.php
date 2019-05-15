@@ -29,7 +29,6 @@ use FacebookAds\Cursor;
 use FacebookAds\Http\RequestInterface;
 use FacebookAds\TypeChecker;
 use FacebookAds\Object\Fields\MessengerProfileFields;
-use FacebookAds\Object\Values\MessengerProfileFieldsValues;
 
 /**
  * This class is auto-generated.
@@ -51,7 +50,6 @@ class MessengerProfile extends AbstractObject {
 
   protected static function getReferencedEnums() {
     $ref_enums = array();
-    $ref_enums['Fields'] = MessengerProfileFieldsValues::getInstance()->getValues();
     return $ref_enums;
   }
 

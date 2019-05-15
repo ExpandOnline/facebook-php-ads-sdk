@@ -48,9 +48,9 @@ class LeadGenDraftQuestionFields extends AbstractEnum {
 
   public function getFieldTypes() {
     return array(
-      'conditional_questions_choices' => 'list<Object>',
+      'conditional_questions_choices' => 'list<LeadGenConditionalQuestionsGroupChoices>',
       'conditional_questions_group_id' => 'string',
-      'dependent_conditional_questions' => 'list<Object>',
+      'dependent_conditional_questions' => 'list<LeadGenConditionalQuestionsGroupQuestions>',
       'inline_context' => 'string',
       'key' => 'string',
       'label' => 'string',

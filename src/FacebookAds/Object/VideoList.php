@@ -54,11 +54,10 @@ class VideoList extends AbstractCrudObject {
   }
 
 
-  public function deleteVideos(array $fields = array(), array $params = array(), $pending = false) {
+  public function getVideos(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
-      'video_ids' => 'list<string>',
     );
     $enums = array(
     );
@@ -66,35 +65,11 @@ class VideoList extends AbstractCrudObject {
     $request = new ApiRequest(
       $this->api,
       $this->data['id'],
-      RequestInterface::METHOD_DELETE,
+      RequestInterface::METHOD_GET,
       '/videos',
-      new AbstractCrudObject(),
+      new AdVideo(),
       'EDGE',
-      array(),
-      new TypeChecker($param_types, $enums)
-    );
-    $request->addParams($params);
-    $request->addFields($fields);
-    return $pending ? $request : $request->execute();
-  }
-
-  public function createVideo(array $fields = array(), array $params = array(), $pending = false) {
-    $this->assureId();
-
-    $param_types = array(
-      'video_ids' => 'list<string>',
-    );
-    $enums = array(
-    );
-
-    $request = new ApiRequest(
-      $this->api,
-      $this->data['id'],
-      RequestInterface::METHOD_POST,
-      '/videos',
-      new VideoList(),
-      'EDGE',
-      VideoList::getFieldsEnum()->getValues(),
+      AdVideo::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
