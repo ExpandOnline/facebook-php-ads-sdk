@@ -28,8 +28,8 @@ use FacebookAds\ApiRequest;
 use FacebookAds\Cursor;
 use FacebookAds\Http\RequestInterface;
 use FacebookAds\TypeChecker;
-use FacebookAds\Object\Fields\LiveEncoderFields;
-use FacebookAds\Object\Values\LiveEncoderStatusValues;
+use FacebookAds\Object\Fields\WhatsAppBusinessAccountFields;
+use FacebookAds\Object\Values\WhatsAppBusinessAccountCategoryValues;
 
 /**
  * This class is auto-generated.
@@ -40,68 +40,38 @@ use FacebookAds\Object\Values\LiveEncoderStatusValues;
  *
  */
 
-class LiveEncoder extends AbstractCrudObject {
+class WhatsAppBusinessAccount extends AbstractCrudObject {
 
   /**
-   * @return LiveEncoderFields
+   * @return WhatsAppBusinessAccountFields
    */
   public static function getFieldsEnum() {
-    return LiveEncoderFields::getInstance();
+    return WhatsAppBusinessAccountFields::getInstance();
   }
 
   protected static function getReferencedEnums() {
     $ref_enums = array();
-    $ref_enums['Status'] = LiveEncoderStatusValues::getInstance()->getValues();
+    $ref_enums['Category'] = WhatsAppBusinessAccountCategoryValues::getInstance()->getValues();
     return $ref_enums;
   }
 
 
-  public function createTelemetry(array $fields = array(), array $params = array(), $pending = false) {
+  public function getAssignedUsers(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
-      'bitrate' => 'unsigned int',
-      'broadcast_id' => 'string',
-      'cpu_load_15m' => 'float',
-      'cpu_load_1m' => 'float',
-      'cpu_load_5m' => 'float',
-      'cpu_temperature' => 'unsigned int',
-      'cpu_usage' => 'float',
-      'framerate' => 'float',
-      'frames_dropped' => 'float',
-      'gpu_temperature' => 'unsigned int',
-      'gpu_usage' => 'float',
-      'last_audio_timecode' => 'unsigned int',
-      'last_video_keyframe_timecode' => 'unsigned int',
-      'last_video_timecode' => 'unsigned int',
-      'memory_usage' => 'float',
-      'network_latency' => 'float',
-      'network_rx_bandwidth' => 'unsigned int',
-      'network_rx_packets_dropped' => 'float',
-      'network_rx_packets_errors' => 'float',
-      'network_tx_bandwidth' => 'unsigned int',
-      'network_tx_packets_dropped' => 'float',
-      'network_tx_packets_errors' => 'float',
-      'process_uptime' => 'unsigned int',
-      'status' => 'status_enum',
-      'timestamp' => 'unsigned int',
-      'total_audio_frames_sent' => 'unsigned int',
-      'total_video_frames_sent' => 'unsigned int',
-      'total_video_keyframes_sent' => 'unsigned int',
-      'uptime' => 'unsigned int',
     );
     $enums = array(
-      'status_enum' => LiveEncoderStatusValues::getInstance()->getValues(),
     );
 
     $request = new ApiRequest(
       $this->api,
       $this->data['id'],
-      RequestInterface::METHOD_POST,
-      '/telemetry',
-      new LiveEncoder(),
+      RequestInterface::METHOD_GET,
+      '/assigned_users',
+      new AssignedUser(),
       'EDGE',
-      LiveEncoder::getFieldsEnum()->getValues(),
+      AssignedUser::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);
@@ -109,10 +79,11 @@ class LiveEncoder extends AbstractCrudObject {
     return $pending ? $request : $request->execute();
   }
 
-  public function deleteSelf(array $fields = array(), array $params = array(), $pending = false) {
+  public function deleteMessageTemplates(array $fields = array(), array $params = array(), $pending = false) {
     $this->assureId();
 
     $param_types = array(
+      'name' => 'string',
     );
     $enums = array(
     );
@@ -121,9 +92,97 @@ class LiveEncoder extends AbstractCrudObject {
       $this->api,
       $this->data['id'],
       RequestInterface::METHOD_DELETE,
-      '/',
+      '/message_templates',
       new AbstractCrudObject(),
-      'NODE',
+      'EDGE',
+      array(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getMessageTemplates(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'category' => 'list<category_enum>',
+      'content' => 'string',
+      'language' => 'list<string>',
+      'name' => 'string',
+      'name_or_content' => 'string',
+      'status' => 'list<status_enum>',
+    );
+    $enums = array(
+      'category_enum' => WhatsAppBusinessAccountCategoryValues::getInstance()->getValues(),
+      'status_enum' => array(
+        'APPROVED',
+        'DELETED',
+        'PENDING',
+        'PENDING_DELETION',
+        'REJECTED',
+      ),
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/message_templates',
+      new AbstractCrudObject(),
+      'EDGE',
+      array(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function createMessageTemplate(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+      'category' => 'category_enum',
+      'components' => 'list<map>',
+      'language' => 'string',
+      'name' => 'string',
+    );
+    $enums = array(
+      'category_enum' => WhatsAppBusinessAccountCategoryValues::getInstance()->getValues(),
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_POST,
+      '/message_templates',
+      new WhatsAppBusinessAccount(),
+      'EDGE',
+      WhatsAppBusinessAccount::getFieldsEnum()->getValues(),
+      new TypeChecker($param_types, $enums)
+    );
+    $request->addParams($params);
+    $request->addFields($fields);
+    return $pending ? $request : $request->execute();
+  }
+
+  public function getPhoneNumbers(array $fields = array(), array $params = array(), $pending = false) {
+    $this->assureId();
+
+    $param_types = array(
+    );
+    $enums = array(
+    );
+
+    $request = new ApiRequest(
+      $this->api,
+      $this->data['id'],
+      RequestInterface::METHOD_GET,
+      '/phone_numbers',
+      new AbstractCrudObject(),
+      'EDGE',
       array(),
       new TypeChecker($param_types, $enums)
     );
@@ -145,50 +204,9 @@ class LiveEncoder extends AbstractCrudObject {
       $this->data['id'],
       RequestInterface::METHOD_GET,
       '/',
-      new LiveEncoder(),
+      new WhatsAppBusinessAccount(),
       'NODE',
-      LiveEncoder::getFieldsEnum()->getValues(),
-      new TypeChecker($param_types, $enums)
-    );
-    $request->addParams($params);
-    $request->addFields($fields);
-    return $pending ? $request : $request->execute();
-  }
-
-  public function updateSelf(array $fields = array(), array $params = array(), $pending = false) {
-    $this->assureId();
-
-    $param_types = array(
-      'broadcast_id' => 'string',
-      'cap_audio_codecs' => 'list<string>',
-      'cap_streaming_protocols' => 'list<string>',
-      'cap_video_codecs' => 'list<string>',
-      'error_code' => 'unsigned int',
-      'error_msg' => 'string',
-      'input_audio_channels' => 'unsigned int',
-      'input_audio_samplerate' => 'unsigned int',
-      'input_video_framerate' => 'string',
-      'input_video_gop_num_b_frames' => 'unsigned int',
-      'input_video_gop_size' => 'unsigned int',
-      'input_video_height' => 'unsigned int',
-      'input_video_interlace_mode' => 'string',
-      'input_video_width' => 'unsigned int',
-      'name' => 'string',
-      'status' => 'status_enum',
-      'version' => 'string',
-    );
-    $enums = array(
-      'status_enum' => LiveEncoderStatusValues::getInstance()->getValues(),
-    );
-
-    $request = new ApiRequest(
-      $this->api,
-      $this->data['id'],
-      RequestInterface::METHOD_POST,
-      '/',
-      new LiveEncoder(),
-      'NODE',
-      LiveEncoder::getFieldsEnum()->getValues(),
+      WhatsAppBusinessAccount::getFieldsEnum()->getValues(),
       new TypeChecker($param_types, $enums)
     );
     $request->addParams($params);

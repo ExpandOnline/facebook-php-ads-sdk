@@ -33,10 +33,18 @@ use FacebookAds\Enum\AbstractEnum;
  * on github and we'll fix in our codegen framework. We'll not be able to accept
  * pull request for this class.
  *
- * @method static OracleTransactionTypeValues getInstance()
+ * @method static WhatsAppBusinessAccountCategoryValues getInstance()
  */
-class OracleTransactionTypeValues extends AbstractEnum {
+class WhatsAppBusinessAccountCategoryValues extends AbstractEnum {
 
-  const CM = 'CM';
-  const INV = 'INV';
+  const ACCOUNT_UPDATE = 'ACCOUNT_UPDATE';
+  const ALERT_UPDATE = 'ALERT_UPDATE';
+  const APPOINTMENT_UPDATE = 'APPOINTMENT_UPDATE';
+  const ISSUE_RESOLUTION = 'ISSUE_RESOLUTION';
+  const PAYMENT_UPDATE = 'PAYMENT_UPDATE';
+  const PERSONAL_FINANCE_UPDATE = 'PERSONAL_FINANCE_UPDATE';
+  const RESERVATION_UPDATE = 'RESERVATION_UPDATE';
+  const SHIPPING_UPDATE = 'SHIPPING_UPDATE';
+  const TICKET_UPDATE = 'TICKET_UPDATE';
+  const TRANSPORTATION_UPDATE = 'TRANSPORTATION_UPDATE';
 }

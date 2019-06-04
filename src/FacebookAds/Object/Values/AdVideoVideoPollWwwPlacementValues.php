@@ -33,11 +33,12 @@ use FacebookAds\Enum\AbstractEnum;
  * on github and we'll fix in our codegen framework. We'll not be able to accept
  * pull request for this class.
  *
- * @method static VideoCopyrightRuleSourceValues getInstance()
+ * @method static AdVideoVideoPollWwwPlacementValues getInstance()
  */
-class VideoCopyrightRuleSourceValues extends AbstractEnum {
+class AdVideoVideoPollWwwPlacementValues extends AbstractEnum {
 
-  const MATCH_SETTINGS_DIALOG = 'MATCH_SETTINGS_DIALOG';
-  const RULES_SELECTOR = 'RULES_SELECTOR';
-  const RULES_TAB = 'RULES_TAB';
+  const BOTTOM_LEFT = 'BOTTOM_LEFT';
+  const BOTTOM_RIGHT = 'BOTTOM_RIGHT';
+  const TOP_LEFT = 'TOP_LEFT';
+  const TOP_RIGHT = 'TOP_RIGHT';
 }

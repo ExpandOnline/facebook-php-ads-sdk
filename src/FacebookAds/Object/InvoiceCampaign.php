@@ -22,9 +22,13 @@
  *
  */
 
-namespace FacebookAds\Object\Values;
+namespace FacebookAds\Object;
 
-use FacebookAds\Enum\AbstractEnum;
+use FacebookAds\ApiRequest;
+use FacebookAds\Cursor;
+use FacebookAds\Http\RequestInterface;
+use FacebookAds\TypeChecker;
+use FacebookAds\Object\Fields\InvoiceCampaignFields;
 
 /**
  * This class is auto-generated.
@@ -33,14 +37,21 @@ use FacebookAds\Enum\AbstractEnum;
  * on github and we'll fix in our codegen framework. We'll not be able to accept
  * pull request for this class.
  *
- * @method static MeasurementReportReportTypeValues getInstance()
  */
-class MeasurementReportReportTypeValues extends AbstractEnum {
 
-  const FRUIT_ROLLUP_REPORT = 'fruit_rollup_report';
-  const MMM_REPORT = 'mmm_report';
-  const MULTI_CHANNEL_REPORT = 'multi_channel_report';
-  const PARTNER_LIFT_STUDY_REPORT = 'partner_lift_study_report';
-  const THIRD_PARTY_MTA_REPORT = 'third_party_mta_report';
-  const VIDEO_METRICS_REPORT = 'video_metrics_report';
+class InvoiceCampaign extends AbstractObject {
+
+  /**
+   * @return InvoiceCampaignFields
+   */
+  public static function getFieldsEnum() {
+    return InvoiceCampaignFields::getInstance();
+  }
+
+  protected static function getReferencedEnums() {
+    $ref_enums = array();
+    return $ref_enums;
+  }
+
+
 }

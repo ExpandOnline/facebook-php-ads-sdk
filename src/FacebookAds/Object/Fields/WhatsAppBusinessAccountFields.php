@@ -22,7 +22,7 @@
  *
  */
 
-namespace FacebookAds\Object\Values;
+namespace FacebookAds\Object\Fields;
 
 use FacebookAds\Enum\AbstractEnum;
 
@@ -33,10 +33,33 @@ use FacebookAds\Enum\AbstractEnum;
  * on github and we'll fix in our codegen framework. We'll not be able to accept
  * pull request for this class.
  *
- * @method static BusinessAccessTypeValues getInstance()
  */
-class BusinessAccessTypeValues extends AbstractEnum {
 
-  const AGENCY = 'AGENCY';
-  const OWNER = 'OWNER';
+class WhatsAppBusinessAccountFields extends AbstractEnum {
+
+  const ANALYTICS = 'analytics';
+  const CURRENCY = 'currency';
+  const ELIGIBLE_FOR_SENDING_NOTIFICATIONS = 'eligible_for_sending_notifications';
+  const ID = 'id';
+  const INELIGIBLE_FOR_SENDING_NOTIFICATIONS_REASON = 'ineligible_for_sending_notifications_reason';
+  const MESSAGE_TEMPLATE_NAMESPACE = 'message_template_namespace';
+  const NAME = 'name';
+  const ON_BEHALF_OF_BUSINESS_INFO = 'on_behalf_of_business_info';
+  const STATUS = 'status';
+  const TIMEZONE_ID = 'timezone_id';
+
+  public function getFieldTypes() {
+    return array(
+      'analytics' => 'Object',
+      'currency' => 'string',
+      'eligible_for_sending_notifications' => 'bool',
+      'id' => 'string',
+      'ineligible_for_sending_notifications_reason' => 'string',
+      'message_template_namespace' => 'string',
+      'name' => 'string',
+      'on_behalf_of_business_info' => 'Object',
+      'status' => 'string',
+      'timezone_id' => 'string',
+    );
+  }
 }

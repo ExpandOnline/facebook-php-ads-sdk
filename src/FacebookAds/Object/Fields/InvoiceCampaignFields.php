@@ -22,7 +22,7 @@
  *
  */
 
-namespace FacebookAds\Object\Values;
+namespace FacebookAds\Object\Fields;
 
 use FacebookAds\Enum\AbstractEnum;
 
@@ -33,13 +33,29 @@ use FacebookAds\Enum\AbstractEnum;
  * on github and we'll fix in our codegen framework. We'll not be able to accept
  * pull request for this class.
  *
- * @method static BusinessRoleValues getInstance()
  */
-class BusinessRoleValues extends AbstractEnum {
 
-  const ADMIN = 'ADMIN';
-  const ADS_RIGHTS_REVIEWER = 'ADS_RIGHTS_REVIEWER';
-  const EMPLOYEE = 'EMPLOYEE';
-  const FINANCE_ANALYST = 'FINANCE_ANALYST';
-  const FINANCE_EDITOR = 'FINANCE_EDITOR';
+class InvoiceCampaignFields extends AbstractEnum {
+
+  const AD_ACCOUNT_ID = 'ad_account_id';
+  const BILLED_AMOUNT_DETAILS = 'billed_amount_details';
+  const CAMPAIGN_ID = 'campaign_id';
+  const CAMPAIGN_NAME = 'campaign_name';
+  const CLICKS = 'clicks';
+  const CONVERSIONS = 'conversions';
+  const IMPRESSIONS = 'impressions';
+  const TAGS = 'tags';
+
+  public function getFieldTypes() {
+    return array(
+      'ad_account_id' => 'string',
+      'billed_amount_details' => 'BilledAmountDetails',
+      'campaign_id' => 'string',
+      'campaign_name' => 'string',
+      'clicks' => 'unsigned int',
+      'conversions' => 'unsigned int',
+      'impressions' => 'unsigned int',
+      'tags' => 'list<string>',
+    );
+  }
 }
